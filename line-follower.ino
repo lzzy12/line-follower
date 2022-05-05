@@ -125,19 +125,20 @@ void loop() {
   sensorL = digitalRead(0);
   sensorR = digitalRead(1);
 
-  //move straight
-  if(sensor2==status && sensor3==status && sensor1 == sensor4  && sensor4 == !status){
-    straight();
-  }
-  
+  //color inversion
   if ((sensor1 == sensor4 && sensor4 == status && sensor2 == sensor3 && sensor3 == !status) ||
     (sensor1 == sensor4 && sensor4 == !status && sensor2 == sensor3 && sensor3 == status)){
      // Colors inverted
       status != status;
   }
   
+  //move straight
+  if(sensor2==status && sensor3==status && sensor1 == sensor4  && sensor4 == !status){
+    straight();
+  }
+  
   // if +_junction found
-  else if (sensor1 == sensor2 && sensor2 == sensor3  && sensor3 == sensor4 && sensor4 == status && sensorF == sensorB && sensorB == status){
+  if (sensor1 == sensor2 && sensor2 == sensor3  && sensor3 == sensor4 && sensor4 == status && sensorF == sensorB && sensorB == status){
     // 3 is an arbitrary value
     if (plus_count == 0){
       straight();

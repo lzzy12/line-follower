@@ -96,21 +96,25 @@ void straight(){
     digitalWrite(IN3, HIGH);
     digitalWrite(IN4, LOW);
 }
+
 void halt(){
     digitalWrite(IN1, LOW);
     digitalWrite(IN2, LOW);
     digitalWrite(IN3, LOW);
     digitalWrite(IN4, LOW);
 }
+
 void signalCheckpointFound(){
     pjcount++;
     digitalWrite(buzzer,1);
     delay(1000);
     digitalWrite(buzzer,0);
 }
+
 int status = 1; // 1 for black 0 for white
 int t_count = 0;
 int plus_count = 0;
+
 void loop() {
   sensor1 = digitalRead(8);
   sensor2 = digitalRead(9);
@@ -121,11 +125,17 @@ void loop() {
   sensorL = digitalRead(0);
   sensorR = digitalRead(1);
 
-   if ((sensor1 == sensor4 && sensor4 == status && sensor2 == sensor3 && sensor3 == !status) ||
+  //move straight
+  if(sensor2==status && sensor3==status && sensor1 == sensor4  && sensor4 == !status){
+    straight();
+  }
+  
+  if ((sensor1 == sensor4 && sensor4 == status && sensor2 == sensor3 && sensor3 == !status) ||
     (sensor1 == sensor4 && sensor4 == !status && sensor2 == sensor3 && sensor3 == status)){
      // Colors inverted
       status != status;
   }
+  
   // if +_junction found
   else if (sensor1 == sensor2 && sensor2 == sensor3  && sensor3 == sensor4 && sensor4 == status && sensorF == sensorB && sensorB == status){
     // 3 is an arbitrary value
@@ -134,6 +144,7 @@ void loop() {
     }
     plus_count++;
   }
+  
   // if t_junction found
   else if (sensor1 == sensor2 && sensor2 == sensor3  && sensor3 == sensor4 && sensor4 == status && sensorF == !status){
     // 3 is an arbitrary value
@@ -142,11 +153,13 @@ void loop() {
     }
     t_count++;
   }
+  
   else if((sensor1 == sensor2 && sensor2 == sensor3 && sensor3 == status  && sensor4 == sensorF && sensorF == !status) ||
            (sensor1 == sensor2 && sensor2 == status && sensor3 == sensor4 && sensorF == sensor4 && sensor4 == !status)){
     
     sharp_right();
   }
+  
   //left turn
   else if((sensor1==!status && sensor2==status && sensor3==!status && sensor4==status) || (sensor1 == sensor2 && sensor2 == !status && sensor3==sensor4 && sensor4 ==status)){
     sharp_left();
@@ -156,13 +169,10 @@ void loop() {
   else if(sensor2==status && sensor3==!status){
     right();
   }
+  
   //adjust left
   else if(sensor2==!status && sensor3==status){
     left();
-  }
-  //move straight
-  else if(sensor2==status && sensor3==status && sensor1 == sensor4  && sensor4 == !status){
-    straight();
   }
 
   //check_point notif
